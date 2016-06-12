@@ -12,6 +12,12 @@ To protect ourselves, we need to obfuscate proprietary levels.
 
 Our log needs to allow us to track trades that we take as well as the trades that we do not take.
 
+
+## Finish Strategy Framework
+
+Along with coding, this will require lots of testing.
+
+
 ## Create a Profit/Loss Statement By Symbol
 
 One of our goals is to understand what we are trading and learn for our successes and mistakes.  To do that, we want to understand our 
