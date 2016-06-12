@@ -7,3 +7,4 @@ droptoken.RDS
 rsconnect/
 .httr-oauth
 .Rapp.history
+dropbox/
