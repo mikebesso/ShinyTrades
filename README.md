@@ -1,5 +1,7 @@
 # ShinyTrades
-A place to make my trading strategy shine.
+
+A place to make my trading strategy shine.  Though, we have a long ways to go.
+
 
 
 # Current Project List
