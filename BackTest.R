@@ -184,7 +184,8 @@
           indicators = list(
             volume = ArgsVolume(),
             xl = ArgsXL(),
-            macd = ArgsMACD(fast = 12, slow = 26, signal = 9)
+            macd = ArgsMACD(fast = args$mcad_args$fast, slow = args$mcad_args$slow, signal= args$mcad_args$signal, show = args$mcad_args$show),
+            bb = ArgsBB(show = args$bb_args$show, n = args$bb_args$n, sd = args$bb_args$sd)
           )
       );
       # if(input$addVo) {
