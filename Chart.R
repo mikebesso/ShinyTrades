@@ -64,7 +64,7 @@ ArgsBB <- function(n = 20, sd = 2, show = TRUE){
   SD <- sd;
   Show <- show;
 
-  TA <- paste0("addBB(n = ", N, ", sd = ", SD, ")");
+  TA <- paste0("addBBands(n = ", N, ", sd = ", SD, ")");
 
   return(
     list(
