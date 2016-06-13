@@ -26,7 +26,7 @@
   ColumnTypes = "cddddd";
   ColumnNames = c("timestamp", "Close", "High", "Low", "Open", "Volume");
 
-  LocalOLCFolder <- '/Volumes/Pegasus/Users/Mike/Dropbox/Apps/ShinyTrades/OHLC';
+  LocalOHLCFolder <- '/Volumes/Pegasus/Users/Mike/Dropbox/Apps/ShinyTrades/OHLC';
   DropBoxFolder <- 'ohlc';
   DropBoxCache <- 'DropBoxCache/ohlc';
 
@@ -202,12 +202,12 @@
   CreateIntervalFolders <- function(){
 
 
-    symbols <- basename(list.dirs(path, recursive = FALSE));
+    symbols <- basename(list.dirs(LocalOHLCFolder, recursive = FALSE));
 
     df <- expand.grid(symbols = symbols, interval = c("W", "M", "D", "4H", "H", "5m"));
 
     a_ply(df, 1, .fun = function(df){
-      suppressWarnings(dir.create(file.path(path, df$symbol, df$interval)));
+      suppressWarnings(dir.create(file.path(LocalOHLCFolder, df$symbol, df$interval)));
     })
 
 
@@ -217,7 +217,7 @@
 
   LoadDataFromLocal <- function(Symbol, Interval){
 
-    file <- file.path(LocalOLCFolder, Symbol, paste0(Symbol, "-", Interval, ".csv"));
+    file <- file.path(LocalOHLCFolder, Symbol, paste0(Symbol, "-", Interval, ".csv"));
 
     ReadTradeStationCSV2Zoo2XTS(file, Symbol, Interval);
 
@@ -253,7 +253,7 @@
       CreateIntervalFolders = CreateIntervalFolders,
       LoadDataFromDropBox = LoadDataFromDropBox,
       LoadDataFromLocal = LoadDataFromLocal,
-      LocalOLCFolder = LocalOLCFolder,
+      LocalOHLCFolder = LocalOHLCFolder,
       Validate = Validate
     )
   );

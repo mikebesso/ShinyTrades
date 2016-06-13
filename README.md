@@ -3,42 +3,32 @@
 A place to make my trading strategy shine.  Though, we have a long ways to go.
 
 
+# Notes
 
-# Current Project List
+## Current Project/To Do List
 
-## Obfuscate Levels
-
-To protect ourselves, we need to obfuscate proprietary levels.
-
-## Creaate Trading Log
-
-Our log needs to allow us to track trades that we take as well as the trades that we do not take.
+I have moved the current list of projects and to do's to the [issues list](https://github.com/mikebesso/ShinyTrades/issues).
 
 
-## Finish Strategy Framework
+# Goals
 
-Along with coding, this will require lots of testing.
+## Trading
 
+### Develop a Trading Strategy Platform
 
-## Create a Profit/Loss Statement By Symbol
+### Simplify the Trading Process
 
-One of our goals is to understand what we are trading and learn for our successes and mistakes.  To do that, we want to understand our 
-how well we are doing by symbol.
+### Self-Calibrate
 
+### Educate Others
 
-## Validate Futures Meta Data
+## Professional Development
 
-We need to simplify reality so that we can manage our trades with confidence.
+### Further R and Shiny Skills
 
-### Validate Futures Symbol Roll Over Dates
+### Learn Quantmod
 
-Since the @FUTURES symbols roll over, we need to now which symbol we are trading even though we are charting the @FUTURES symbol.
+### Learn Time Series Analysis
 
-### Validate Futures Pricing Data
+# Success Factors
 
-When creating alerts and determining entries, we need to quickly understand what our risk/rewards are.
-
-
-## Calibration
-
-This is a longer term goal, but we want to start thinking about this now.
