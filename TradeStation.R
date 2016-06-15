@@ -23,7 +23,7 @@
 
 .TradeStation <- function(path = file.path("/Volumes/Pegasus/Users/Mike/Dropbox/Apps/ShinyTrades/ohlc"), time_zone = App$GetTimeZone(), validate = FALSE){
 
-  ColumnTypes = "cddddd";
+  ColumnTypes = "cddddi";
   ColumnNames = c("timestamp", "Close", "High", "Low", "Open", "Volume");
 
   LocalOHLCFolder <- '/Volumes/Pegasus/Users/Mike/Dropbox/Apps/ShinyTrades/OHLC';
@@ -134,13 +134,27 @@
   ProcessRawFilesForSymbolAndInterval <- function(Symbol, Interval){
 
     ReadTradeStationCSV2DF <- function(file){
+
       test <- read_csv(file, "cccccc", n_max = 1, col_names = FALSE);
-      if (test$X1 == 'timestamp') {
-        df <- read_csv(file, ColumnTypes);
-        names(df) <- ColumnNames;
+      if (ncol(test) == 6) {
+        if (test$X1 == 'timestamp') {
+          df <- read_csv(file, ColumnTypes, col_names = TRUE, trim_ws = TRUE);
+          names(df) <- ColumnNames;
+        } else {
+          df <- read_csv(file, col_types = ColumnTypes, col_names = ColumnNames, trim_ws = TRUE)
+        }
       } else {
-        df <- read_csv(file, col_types = "cddddd", col_names = ColumnNames)
+        df <- data_frame(
+          x1 = as.character(list()),
+          x2 = as.double(list()),
+          x3 = as.double(list()),
+          x4 = as.double(list()),
+          x5 = as.double(list()),
+          x6 = as.double(list())
+        );
+        names(df) <- ColumnNames;
       }
+
       return(df);
     }
 
