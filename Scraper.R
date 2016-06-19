@@ -18,7 +18,7 @@
 
     x <- as.xts(
       zoo(
-        df[-1],
+        df[-(1:5)],
         strptime(
           df$timestamp,
           format = format,

@@ -1,7 +1,13 @@
 
 
-IndicatorDataToZoo <- function(Indicator, IndexTZ = "America/Chicago"){
-  read.zoo(Indicator, format = "%Y-%m-%d %H:%M", tz = IndexTZ, index.column = "timestamp")
+IndicatorDataToZoo <- function(Indicator, IndexTZ = App$GetTimeZone()){
+  #read.zoo(Indicator, format = "%Y-%m-%d %H:%M", tz = IndexTZ, index.column = "timestamp")
+
+  x <- strptime(Indicator$timestamp, format = "%Y-%m-%d %H:%M", tz = App$GetTimeZone());
+  df <- Indicator[2:ncol(Indicator)];
+  z <- zoo(df, x);
+
+  z
 }
 
 AddStandardIndicatorsToData <- function(Data){
@@ -106,6 +112,57 @@ AddPrximityBandsToData <- function(Data){
 
 }
 
+CreateOpenTransaction <- function(Price, ProfitTarget, StopLoss){
+
+  Risk = abs(StopLoss - Price);
+  Reward = abs(ProfitTarget - Price);
+
+  if (Risk > 0) {
+    RewardRiskRatio <- round(Reward / Risk, 1);
+  } else {
+    Risk <- 0;
+  }
+
+  # Need to calculate size based on risk
+  Size = 100;
+
+
+  list(
+    Direction = sign(ProfitTarget - StopLoss),
+    Size = Size,
+    Price = Price,
+    ProfitTarget = ProfitTarget,
+    StopLoss = StopLoss,
+    Risk = Risk,
+    Reward = Reward,
+    RewardRiskRatio = RewardRiskRatio,
+
+    CurrentPositionSize = Size,
+    CurrentPositionPrice = Price
+  )
+
+}
+
+
+CreateCloseTransaction <- function(Size, Price){
+
+
+  list(
+    Direction = sign(Size),
+    Size = Size,
+    Price = Price,
+    ProfitTarget = 0.0,
+    StopLoss = 0.0,
+    Risk = 0.0,
+    Reward = 0.0,
+    RewardRiskRatio = 0.0,
+
+    CurrentPositionSize = 0,
+    CurrentPositionPrice = 0.0
+  )
+
+}
+
 
 AddTransactionsToData <- function(Data, XLs){
 
@@ -118,7 +175,7 @@ AddTransactionsToData <- function(Data, XLs){
 
 
 
-  df <- data.frame(
+  df <- data_frame(
     timestamp = Index,
 
     xl_D1_Busted = rep(FALSE, BarCount),
@@ -132,10 +189,15 @@ AddTransactionsToData <- function(Data, XLs){
     CurrentPositionSize = rep(0.0, BarCount),
     CurrentPositionPrice = rep(0.0, BarCount),
 
+    Trans_Direction = rep(0, BarCount),
     Trans_Size = rep(0, BarCount),
-    Trans_Price = rep(0, BarCount),
-    Trans_ProfitTarget = rep(0, BarCount),
-    Trans_StopLoss = rep(0, BarCount)
+    Trans_Price = rep(0.0, BarCount),
+    Trans_ProfitTarget = rep(0,0, BarCount),
+    Trans_StopLoss = rep(0.0, BarCount),
+
+    Trans_Risk = rep(0.0, BarCount),
+    Trans_Reward = rep(0.0, BarCount),
+    Trans_RewardRiskRatio = rep(0.0, BarCount)
   );
 
 
@@ -152,9 +214,9 @@ AddTransactionsToData <- function(Data, XLs){
     # If yesterday's levels are not yet expired, carry over "busted"
 
     if (!Expired){
-      df$xl_D1_Busted[Bar] <- df$xl_D1_Busted[Bar - 1] || Lows[Bar] > XLs$xl_DD1[Bar];
-      df$xl_D2_Busted[Bar] <- df$xl_D2_Busted[Bar - 1] || Lows[Bar] > XLs$xl_DD2[Bar];
-      df$xl_D3_Busted[Bar] <- df$xl_D3_Busted[Bar - 1] || Lows[Bar] > XLs$xl_DD3[Bar];
+      df$xl_D1_Busted[Bar] <- df$xl_D1_Busted[Bar - 1] || Lows[Bar] < XLs$xl_DD1[Bar];
+      df$xl_D2_Busted[Bar] <- df$xl_D2_Busted[Bar - 1] || Lows[Bar] < XLs$xl_DD2[Bar];
+      df$xl_D3_Busted[Bar] <- df$xl_D3_Busted[Bar - 1] || Lows[Bar] < XLs$xl_DD3[Bar];
       df$xl_S1_Busted[Bar] <- df$xl_S1_Busted[Bar - 1] || Highs[Bar] > XLs$xl_SD1[Bar];
       df$xl_S2_Busted[Bar] <- df$xl_S2_Busted[Bar - 1] || Highs[Bar] > XLs$xl_SD1[Bar];
       df$xl_S3_Busted[Bar] <- df$xl_S3_Busted[Bar - 1] || Highs[Bar] > XLs$xl_SD1[Bar];
@@ -175,59 +237,100 @@ AddTransactionsToData <- function(Data, XLs){
     # If we can enter a trade, then see if we have a good one
     # Else if we are in a trade, see if we should get out
 
+    Trans <- NA;
+
     if (CanEnterTrade) {
+
       if (!df$xl_D3_Busted[Bar] && (Lows[Bar] < XLs$xl_DP3[Bar])) {
-        df$CurrentPositionSize[Bar] <- 1;
-        df$CurrentPositionPrice[Bar] <- Lows[Bar];
-        df$Trans_Size[Bar] <- 1;
-        df$Trans_Price[Bar] <- Lows[Bar];
-        df$Trans_ProfitTarget[Bar] <- Lows[Bar] + (3.0 * Lows[Bar] - XLs$xl_DD3[Bar]);
-        df$Trans_StopLoss = XLs$xl_DD3[Bar];
+        Trans <- CreateOpenTransaction(Price = Lows[Bar], ProfitTarget = Lows[Bar] + (3.0 * (Lows[Bar] - XLs$xl_DD3[Bar])), StopLoss = XLs$xl_DD3[Bar]);
       } else if (!df$xl_D3_Busted[Bar] && (Lows[Bar] < XLs$xl_DP2[Bar])) {
-        df$CurrentPositionSize[Bar] <- 1;
-        df$CurrentPositionPrice[Bar] <- Lows[Bar];
-        df$Trans_Size[Bar] <- 1;
-        df$Trans_Price[Bar] <- Lows[Bar];
-        df$Trans_ProfitTarget[Bar] <- Lows[Bar] + (3.0 * Lows[Bar] - XLs$xl_DD2[Bar]);
-        df$Trans_StopLoss = XLs$xl_DD2[Bar];
+        Trans <- CreateOpenTransaction(Price = Lows[Bar], ProfitTarget = Lows[Bar] + (3.0 * (Lows[Bar] - XLs$xl_DD2[Bar])), StopLoss = XLs$xl_DD2[Bar]);
       } else if (!df$xl_D1_Busted[Bar] && (Lows[Bar] < XLs$xl_DP1[Bar])) {
-        df$CurrentPositionSize[Bar] <- 1;
-        df$CurrentPositionPrice[Bar] <- Lows[Bar];
-        df$Trans_Size[Bar] <- 1;
-        df$Trans_Price[Bar] <- Lows[Bar];
-        df$Trans_ProfitTarget[Bar] <- Lows[Bar] + (3.0 * Lows[Bar] - XLs$xl_DD1[Bar]);
-        df$Trans_StopLoss = XLs$xl_DD1[Bar];
+        Trans <- CreateOpenTransaction(Price = Lows[Bar], ProfitTarget = Lows[Bar] + (3.0 * (Lows[Bar] - XLs$xl_DD2[Bar])), StopLoss = XLs$xl_DD2[Bar]);
       }
-    } else if (df$CurrentPositionSize[Bar] > 0) {
-      if (Highs[Bar] > df$Trans_ProfitTarget[Bar]) {
-        df$Trans_Size[Bar] <- -df$Trans_Size[Bar];
-        df$Trans_Price[Bar] <- Highs[Bar];
-        df$CurrentPositionSize[Bar] <- 0;
-        df$CurrentPositionPrice[Bar] <- 0;
-      } else if (Lows[Bar] < df$Trans_StopLoss[Bar]) {
-        df$Trans_Size[Bar] <- -df$Trans_Size[Bar];
-        df$Trans_Price[Bar] <- Lows[Bar];
-        df$CurrentPositionSize[Bar] <- 0;
-        df$CurrentPositionPrice[Bar] <- 0;
+
+    }
+
+    # If we cannot enter a trade, we might be in a trade.
+    # Check to see if we should close any current trades
+
+    if (!CanEnterTrade) {
+
+      if (df$CurrentPositionSize[Bar] < 0) {
+        if (Lows[Bar] < df$Trans_ProfitTarget[Bar]) {
+          Trans <- CreateCloseTransaction(-df$CurrentPositionSize[Bar], Lows[Bar]);
+        } else if (Highs[Bar] < df$Trans_StopLoss[Bar]) {
+          Trans <- CreateCloseTransaction(-df$CurrentPositionSize[Bar], Highs[Bar]);
+        }
       }
-    } else if (df$CurrentPositionSize[Bar] < 0) {
-      if (Lows[Bar] < df$Trans_ProfitTarget[Bar]) {
-        df$Trans_Size[Bar] <- -df$Trans_Size[Bar];
-        df$Trans_Price[Bar] <- Lows[Bar];
-        df$CurrentPositionSize[Bar] <- 0;
-        df$CurrentPositionPrice[Bar] <- 0;
-      } else if (Highs[Bar] < df$Trans_StopLoss[Bar]) {
-        df$Trans_Size[Bar] <- -df$Trans_Size[Bar];
-        df$Trans_Price[Bar] <- Highs[Bar];
-        df$CurrentPositionSize[Bar] <- 0;
-        df$CurrentPositionPrice[Bar] <- 0;
+
+      if (df$CurrentPositionSize[Bar] > 0) {
+        if (Highs[Bar] > df$Trans_ProfitTarget[Bar]) {
+          Trans <- CreateCloseTransaction(-df$CurrentPositionSize[Bar], Highs[Bar]);
+        } else if (Lows[Bar] < df$Trans_StopLoss[Bar]) {
+          Trans <- CreateCloseTransaction(-df$CurrentPositionSize[Bar], Lows[Bar]);
+        }
       }
+    }
+
+    if (HasNonFalseValue(Trans)){
+
+      df$CurrentPositionSize[Bar] <- Trans$CurrentPositionSize;
+      df$CurrentPositionPrice[Bar] <- Trans$CurrentPositionPrice;
+
+      df$Trans_Direction[Bar] <- Trans$Direction;
+
+      df$Trans_Size[Bar] <- Trans$Size;
+      df$Trans_Price[Bar] <- Trans$Price;
+
+      df$Trans_ProfitTarget[Bar] <- Trans$ProfitTarget;
+      df$Trans_StopLoss[Bar] <- Trans$StopLoss;
+
+      df$Trans_Risk[Bar] <- Trans$Risk;
+      df$Trans_Reward[Bar] <- Trans$Reward;
+      df$Trans_RewardRiskRatio[Bar] <- Trans$RewardRiskRatio;
+
+    }
+
+    # Is this still needed?
+    if (df$CurrentPositionSize[Bar] == 0){
+      df$Trans_ProfitTarget[Bar] <- 0;
+      df$Trans_StopLoss[Bar] <- 0;
     }
 
   }
 
+  df$xl_D1_Busted <- as.double(df$xl_D1_Busted);
+  df$xl_D2_Busted <- as.double(df$xl_D2_Busted);
+  df$xl_D3_Busted <- as.double(df$xl_D3_Busted);
+
+  df$xl_S1_Busted  <- as.double(df$xl_S1_Busted);
+  df$xl_S2_Busted  <- as.double(df$xl_S2_Busted);
+  df$xl_S3_Busted  <- as.double(df$xl_S3_Busted);
+
+
   IndicatorDataToZoo(df, IndexTZ);
 
+}
+
+CreateTransactionLog <- function(StrategyData){
+
+  TransactionData <- StrategyData[StrategyData$Trans_Size != 0]
+
+  if (length(index(TransactionData) > 0)){
+
+    TransactionLog <- data_frame(
+      timestamp = index(TransactionData),
+      Price = TransactionData$Trans_Price
+    )
+  } else {
+    TransactionLog <- data_frame(
+      timestamp = as.POSIXlt(character()),
+      Price = as.double()
+    )
+  }
+
+  return(TransactionLog);
 }
 
 
@@ -246,26 +349,30 @@ StrategyXL <- function(symbol = "SPY", interval = "H", provider = "TradeStation"
   Standard <- AddStandardIndicatorsToData(StrategyData);
   XLs <- AddXLToData(StrategyData, Symbol);
   ProximityBands <- AddPrximityBandsToData(StrategyData);
-#  Trans <- AddTransactionsToData(StrategyData, XLs$df);
+  Trans <- AddTransactionsToData(StrategyData, XLs$df);
+
+
+
+
 
   StrategyData <- merge(
     StrategyData,
     Standard,
     XLs$zoo,
     ProximityBands,
- #   Trans,
+    Trans,
     all = TRUE
   );
 
 
 
-  Transactions <- list();
+  TransactionLog <- CreateTransactionLog(StrategyData);
 
 
   return(
     list(
       Data = StrategyData,
-      Transactions = Transactions
+      Transactions = TransactionLog
     )
   );
 }
@@ -277,10 +384,10 @@ if (FALSE){
 
   LOCAL_MODE <- FALSE;
 
-  XL <- StrategyXL("SPY", interval = "H", source = "DropBox");
+  XL <- StrategyXL("SPY", interval = "H");
 
 
-  View(XL$Data)
+  View(tail(XL$Data, 500));
 
   Chart(
     XL$Data,
