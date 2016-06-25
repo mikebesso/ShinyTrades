@@ -39,6 +39,9 @@ Header <- dashboardHeader(
 
 Body = dashboardBody(
   tabItems(
+    FuturesCalculator$UI.Page,
+    ForexCalculator$UI.Page,
+    EquitiesCalculator$UI.Page,
     Scraper$UI.Page,
     BackTest$UI.Page,
 

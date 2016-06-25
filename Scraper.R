@@ -255,7 +255,7 @@
 
 
 
-  UI.MenuItem <- menuItem("Scraper", tabName = "scraper");
+  UI.MenuItem <- menuSubItem("Scraper", tabName = "scraper");
 
 
   UI.Page <-

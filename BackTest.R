@@ -3,7 +3,7 @@
 
   PageName <- "backtest";
 
-  UI.MenuItem <- menuItem("Back Test", tabName = PageName);
+  UI.MenuItem <- menuSubItem("Back Test", tabName = PageName);
 
   UI.Page <-
       tabItem(
@@ -102,6 +102,16 @@
               helpText("Explain exit strategies.")
               )
           )
+      ),
+
+      fluidRow(
+        box(
+          title = "Log",
+          width = 12,
+
+          htmlOutput("idTransLog", container = tags$div, style = "overflow:scroll;height:500px")
+        )
+
       )
     );
 
@@ -152,30 +162,6 @@
       Symbol <- args$symbol;
       data <- dataInput()$data;
 
-      # strategy <- NULL;
-      # if (args$strategy_args$enabled){
-      #   strategy <- BB_Strategy_Generate(
-      #     data,
-      #     strategy_args = args$strategy_args,
-      #     bb_args = args$bb_args,
-      #     macd_args = args$mcad_args
-      #   );
-      # }
-      #
-      # indicators <- list(
-      #   xl = list(show = TRUE),
-      #   volume = list(show = input$addVo),
-      #   bb = list(show = args$bb_args$show, n = args$bb_args$n, sd = args$bb_args$sd),
-      #   mcad = list(show = args$mcad_args$show, fast = args$mcad_args$fast, slow = args$mcad_args$slow, signal= args$mcad_args$signal),
-      #   transactions = list(show = input$processed)
-      # );
-      #
-      #
-      # Chart(
-      #   data$Data,
-      #   indicators = indicators
-      #
-      # );
 
       Chart(
         data$Data,
@@ -188,33 +174,21 @@
             bb = ArgsBB(show = args$bb_args$show, n = args$bb_args$n, sd = args$bb_args$sd)
           )
       );
-      # if(input$addVo) {
-      #   show(addVo());
-      # }
-      #
-      # if(args$bb_args$show){
-      #   show(addBBands(n = args$bb_args$n, sd = args$bb_args$sd));
-      # }
-      #
-      #
-      # if(args$mcad_args$show){
-      #   if (args$mcad_args$fast < args$mcad_args$signal | args$mcad_args$signal <  args$mcad_args$slow){
-      #     addMACD(fast = args$mcad_args$fast, slow = args$mcad_args$slow, signal= args$mcad_args$signal);
-      #   }
-      # }
-
-
-      # if(!is.null(strategy)){
-      #
-      #   data$AddTransactions(strategy$Buys, strategy$Sells);
-      #
-      #   data$AddCumulativeReturn(strategy$result);
-      #
-      # }
 
 
 
     });
+
+
+    output$idTransLog <- renderGvis({
+      data <- dataInput()$data;
+
+      Log <- data$Transactions;
+
+      gvisTable(Log, formats = list(Price = "#,###.####")) ;
+
+
+    })
 
   };
 

@@ -315,17 +315,25 @@ AddTransactionsToData <- function(Data, XLs){
 
 CreateTransactionLog <- function(StrategyData){
 
-  TransactionData <- StrategyData[StrategyData$Trans_Size != 0]
+  TransactionData <- StrategyData[StrategyData$Trans_Size != 0];
 
   if (length(index(TransactionData) > 0)){
 
     TransactionLog <- data_frame(
-      timestamp = index(TransactionData),
-      Price = TransactionData$Trans_Price
+      ID = 1:length(index(TransactionData)),
+      timestamp = as.character(index(TransactionData)),
+      OpenOrClose = ifelse(as.vector(TransactionData$Trans_Direction) > 0, "Open", "Close"),
+      BuyOrSell = ifelse(as.vector(TransactionData$Trans_Size) > 0, "Buy", "Sell"),
+      Size = as.vector(TransactionData$Trans_Size),
+      Price = as.vector(TransactionData$Trans_Price)
     )
   } else {
     TransactionLog <- data_frame(
-      timestamp = as.POSIXlt(character()),
+      ID = as.integer(),
+      timestamp = character(),
+      OpenOrClose = character(),
+      BuyOrSell = character(),
+      Size = as.double(),
       Price = as.double()
     )
   }
@@ -385,6 +393,7 @@ if (FALSE){
   LOCAL_MODE <- FALSE;
 
   XL <- StrategyXL("SPY", interval = "H");
+
 
 
   View(tail(XL$Data, 500));

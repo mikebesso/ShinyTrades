@@ -12,6 +12,12 @@ library(lubridate);
 library(stringr);
 library(quantmod);
 library(ggplot2);
+library(googleVis);
+
+library(shiny);
+library(shinydashboard);
+library(shinyjs);
+library(shinyAce);
 
 source("mmmR.R");
 source("mmmString.R");
@@ -20,5 +26,6 @@ source("mmmFileSystem.R");
 source("mmmDropBox.R");
 source("mmmApp.R");
 
+source("mmmShinyParts.R")
 
 String <- mmmStringAPI();

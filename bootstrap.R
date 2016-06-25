@@ -8,23 +8,8 @@ Sys.setenv(TZ = "America//Chicago");
 
 LOCAL_MODE <- file.exists("rsconnect");
 
-IDs = list(
-  SideBar = list(
-    idSuperUser = "idSuperUser",
-    idDebug = "idDebug",
-    idTickerProvider = "idTickerProvider",
-    idTickerSource = "idTickerSource",
-    idSideBarMenu = "idSideBarMenu",
-    idSearchButton = "idSearchButton",
-    idSearchText = "idSearchText"
-  )
-);
 
 
-library(shiny);
-library(shinydashboard);
-library(shinyjs);
-library(shinyAce);
 
 
 source("mmm.R");
@@ -54,8 +39,21 @@ source("Strategy.R");
 source("StrategyXL.R");
 source("Chart.R");
 source("BackTest.R");
+source("Calculators.R");
 
 source("SideBar.R");
+
+
+
+IDs = list(
+  SideBar = SideBar$IDs,
+  FuturesCalculator = FuturesCalculator$IDs,
+  ForexCalculator = ForexCalculator$IDs,
+  EquitiesCalculator = EquitiesCalculator$IDs
+);
+
+
+
 
 #source("server_level_editor.R");
 
