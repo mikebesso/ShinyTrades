@@ -1,24 +1,24 @@
 .SideBar <- function(){
 
-  IDs <-list(
-    idSuperUser = "idSuperUser",
-    idDebug = "idDebug",
-    idTickerProvider = "idTickerProvider",
-    idTickerSource = "idTickerSource",
-    idSideBarMenu = "idSideBarMenu",
-    idSearchButton = "idSearchButton",
-    idSearchText = "idSearchText"
+  myIDs <-list(
+    "idSuperUser",
+    "idDebug",
+    "idTickerProvider",
+    "idTickerSource",
+    "idSideBarMenu",
+    "idSearchButton",
+    "idSearchText"
   );
-  names(IDs) <- IDs;
+  names(myIDs) <- myIDs;
 
   UI <-
 
      dashboardSidebar(
       shinyjs::useShinyjs(),
-      sidebarSearchForm(textId = IDs$idSearchText, buttonId = IDs$idSearchButton, label = "Search or Command..."),
+      sidebarSearchForm(textId = myIDs$idSearchText, buttonId = myIDs$idSearchButton, label = "Search or Command..."),
 
       sidebarMenu(
-        id = IDs$idSideBarMenu,
+        id = myIDs$idideBarMenu,
 
         menuItem(
           text = "Position Size Calculators",
@@ -40,14 +40,14 @@
 
       conditionalPanel(
         "1 == 2",
-        checkboxInput(IDs$idDebug, "Debug Mode", value = LOCAL_MODE)
+        checkboxInput(myIDs$idDebug, "Debug Mode", value = LOCAL_MODE)
       ),
 
       conditionalPanel(
-        paste0("input.", IDs$idDebug),
-        checkboxInput(IDs$idSuperUser, "Super User", value = FALSE),
-        selectInput(IDs$idTickerProvider, "Ticker Provider", choices = c("TradeStation", "Yahoo"), selected = "TradeStation"),
-        selectInput(IDs$idTickerSource, "Ticker Source", choices = c(`Drop Box` = "dropbox", `Local` = "local"), selected = ifelse(LOCAL_MODE, "local", "dropbox"))
+        paste0("input.", myIDs$idDebug),
+        checkboxInput(myIDs$idSuperUser, "Super User", value = FALSE),
+        selectInput(myIDs$idTickerProvider, "Ticker Provider", choices = c("TradeStation", "Yahoo"), selected = "TradeStation"),
+        selectInput(myIDs$idTickerSource, "Ticker Source", choices = c(`Drop Box` = "dropbox", `Local` = "local"), selected = ifelse(LOCAL_MODE, "local", "dropbox"))
       )
     );
 
@@ -57,22 +57,22 @@
   Server <- function(input, output, session){
 
     observeEvent(
-      input[[IDs$idSearchButton]],
+      input[[myIDs$idSearchButton]],
       {
-         SearchText <- input[[IDs$idSearchText]];
+         SearchText <- input[[myIDs$idSearchText]];
 
         Command <- tolower(SearchText);
         if (Command == "debug"){
-          updateCheckboxInput(session, IDs$idDebug, value = TRUE);
+          updateCheckboxInput(session, myIDs$idDebug, value = TRUE);
         } else if (Command == "m2mm"){
-          updateCheckboxInput(session, IDs$idSuperUser, value = TRUE);
+          updateCheckboxInput(session, myIDs$idSuperUser, value = TRUE);
         } else if (Command == "reset"){
-          updateCheckboxInput(session, IDs$idDebug, value = FALSE);
-          updateCheckboxInput(session, IDs$idSuperUser, value = FALSE);
+          updateCheckboxInput(session, myIDs$idDebug, value = FALSE);
+          updateCheckboxInput(session, myIDs$idSuperUser, value = FALSE);
         }
 
 
-        updateTextInput(session, IDs$idSearchText, value = "");
+        updateTextInput(session, myIDs$idSearchText, value = "");
       }
     )
 
@@ -81,7 +81,7 @@
 
   return(
     list(
-      IDs = IDs,
+      IDs = myIDs,
       UI = UI,
       Server = Server
     )

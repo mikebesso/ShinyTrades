@@ -42,20 +42,23 @@ Box <-
     },
 
     Result = function(id, width = 4){
-      valueBoxOutput(outputId = id, width);
+      infoBoxOutput(outputId = id, width);
     },
 
     ResultHTML = function(
       value,
-      subtitle,
+      title = "",
+      subtitle = NULL,
       icon = NULL,
       color = "aqua"
     ){
-      valueBox(
+      infoBox(
+        title = title,
         value = value,
         subtitle = subtitle,
         icon = icon,
         color = color,
+        fill = TRUE,
         href = NULL
       )
     },
@@ -71,5 +74,37 @@ Box <-
     }
 
   )
+
+
+  # http://fontawesome.io/icons/
+  # http://getbootstrap.com/components/#glyphicons
+
+  Icon <- list(
+    thumbs = list(
+      up = icon("thumbs-up"),
+      down = icon("thumbs-down")
+    ),
+    hand = list(
+      rock = icon("hand-rock"),
+      paper = icon("hand-paper"),
+      scissors = icon("hand-scissors"),
+      spock = icon("hand-spock"),
+      lizard = icon("hand-lizard")
+    ),
+    currency = list(
+      money = icon("money"),
+      dollar = icon("dollar"),
+      usd = icon("usd"),
+      yen = icon("yen"),
+      euro = icon("eur"),
+      gpb = icon("gbp")
+    ),
+    math = list(
+      percent = icon("percent"),
+      plus = icon("plus"),
+      minus = icon("minus"),
+      times = icon("times")
+    )
+  );
 
 

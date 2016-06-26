@@ -49,11 +49,20 @@ IDs = list(
   SideBar = SideBar$IDs,
   FuturesCalculator = FuturesCalculator$IDs,
   ForexCalculator = ForexCalculator$IDs,
-  EquitiesCalculator = EquitiesCalculator$IDs
+  EquitiesCalculator = EquitiesCalculator$IDs,
+  Validate = function(id){
+    if (!is.character(id) || length(id) != 1) {
+      stop("IDs must be a simple string")
+    }
+    return(id);
+  }
+
 );
 
 
-
+# Need to do this only if running locally
+#options(warn=2, error=recover);
+options(shiny.error=browser)
 
 #source("server_level_editor.R");
 
