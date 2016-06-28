@@ -40,6 +40,7 @@ source("StrategyXL.R");
 source("Chart.R");
 source("BackTest.R");
 source("Calculators.R");
+source("CalcForex.R");
 
 source("SideBar.R");
 

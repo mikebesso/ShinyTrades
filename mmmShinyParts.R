@@ -1,5 +1,37 @@
 
 
+# http://fontawesome.io/icons/
+# http://getbootstrap.com/components/#glyphicons
+
+Icon <- list(
+  thumbs = list(
+    up = icon("thumbs-up"),
+    down = icon("thumbs-down")
+  ),
+  hand = list(
+    rock = icon("hand-rock"),
+    paper = icon("hand-paper"),
+    scissors = icon("hand-scissors"),
+    spock = icon("hand-spock"),
+    lizard = icon("hand-lizard")
+  ),
+  currency = list(
+    money = icon("money"),
+    dollar = icon("dollar"),
+    usd = icon("usd"),
+    yen = icon("yen"),
+    euro = icon("eur"),
+    gpb = icon("gbp")
+  ),
+  math = list(
+    percent = icon("percent"),
+    plus = icon("plus"),
+    minus = icon("minus"),
+    times = icon("times")
+  )
+);
+
+
 
 
 Panel <-
@@ -30,7 +62,7 @@ Box <-
       collapsed = FALSE
     ){
       box(
-        div(class = "shiny-input-panel", flowLayout( ...)),
+        div(class = "shiny-input-panel", flowLayout(...)),
         title = title,
         footer = footer,
         status = status,
@@ -65,6 +97,59 @@ Box <-
       )
     },
 
+
+    TradeHTML = function(
+      PositionSize,
+      Entry,
+      ProfitTarget,
+      StopLoss,
+      width = 2
+    ){
+
+      if (PositionSize > 0){
+        color = "green";
+        icon = Icon$thumbs$up;
+      } else {
+        color = "red";
+        icon = Icon$thumbs$down;
+      }
+      fill = TRUE;
+
+      colorClass <- paste0("bg-", color)
+      boxContent <- div(
+
+        class = "info-box",
+        class = colorClass,
+
+        span(
+          class = "info-box-icon",
+          icon
+        ),
+
+          div(
+            class = "info-box-content",
+            p(
+              class = "info-box-text",
+              PositionSize,
+              "@",
+              Entry,
+              br(),
+              "Stop:",
+              StopLoss,
+              br(),
+              "Target:",
+              ProfitTarget
+            )
+          )
+      );
+
+      div(
+        class = if (!is.null(width)) paste0("col-sm-", width),
+        boxContent
+      )
+    },
+
+
     Render = function(expr, env = parent.frame(), quoted = FALSE)
     {
       vbox_fun <- shiny::exprToFunction(expr, env, quoted)
@@ -75,38 +160,8 @@ Box <-
       })
     }
 
+
+
   )
-
-
-  # http://fontawesome.io/icons/
-  # http://getbootstrap.com/components/#glyphicons
-
-  Icon <- list(
-    thumbs = list(
-      up = icon("thumbs-up"),
-      down = icon("thumbs-down")
-    ),
-    hand = list(
-      rock = icon("hand-rock"),
-      paper = icon("hand-paper"),
-      scissors = icon("hand-scissors"),
-      spock = icon("hand-spock"),
-      lizard = icon("hand-lizard")
-    ),
-    currency = list(
-      money = icon("money"),
-      dollar = icon("dollar"),
-      usd = icon("usd"),
-      yen = icon("yen"),
-      euro = icon("eur"),
-      gpb = icon("gbp")
-    ),
-    math = list(
-      percent = icon("percent"),
-      plus = icon("plus"),
-      minus = icon("minus"),
-      times = icon("times")
-    )
-  );
 
 
