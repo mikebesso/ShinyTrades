@@ -29,6 +29,18 @@ AreLogicals <-function(x) {
 }
 
 
+FormatForex <- function(x){
+  formatC(x, digits = 4)
+}
+
+FormatFutures <- function(x){
+  formatC(x, digits = 2)
+}
+
+FormatEquities <- function(x){
+  formatC(x, digits = 2)
+}
+
 
 #
 # this one seems to work differently if we use X$Y versus X[Y];

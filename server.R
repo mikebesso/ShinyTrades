@@ -15,6 +15,7 @@ shinyServer(
     BackTest$Server(input, output, session);
 
     Console$Server(input, output, session);
+
     FuturesCalculator$Server(input, output, session);
     ForexCalculator$Server(input, output, session);
     EquitiesCalculator$Server(input, output, session);

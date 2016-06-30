@@ -13,6 +13,7 @@ library(stringr);
 library(quantmod);
 library(ggplot2);
 library(googleVis);
+library(markdown);
 
 library(shiny);
 library(shinydashboard);

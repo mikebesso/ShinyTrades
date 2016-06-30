@@ -1,32 +1,44 @@
-CreateFuturesMetaData <- function(file = "FuturesMetaData.csv"){
-
-  myMetaData <- NULL;
-
-  myMonthSymbols <- NULL;
-
-  myMetaDataMonthColumns <- NULL;
-
-  Init <- function(){
-
-    message("Reading Futures Meta Data from: ", file);
-    myMetaData <<- read.csv(file, stringsAsFactors = FALSE);
-
-    ColumnCount <- ncol(myMetaData);
-    myMetaDataMonthColumns <<- seq(ColumnCount-11, ColumnCount);
+.FuturesMetaData <- function(file = "MetaData/FuturesMetaData.csv"){
 
 
-    myMonthSymbols <<- unlist(
-      lapply(
-        str_split(
-          names(myMetaData)[myMetaDataMonthColumns],
-          fixed('.')
-        ),
-        head,
-        1
-      )
-    );
+  # Initialize Everything
+
+  message("Reading Futures Meta Data from: ", file);
+  myMetaData <- read_csv(file);
+
+  ColumnCount <- ncol(myMetaData);
+  myMetaDataMonthColumns <- seq(ColumnCount-11, ColumnCount);
 
 
+  myMonthSymbols <- unlist(
+    lapply(
+      str_split(
+        names(myMetaData)[myMetaDataMonthColumns],
+        fixed('.')
+      ),
+      head,
+      1
+    )
+  );
+
+  Symbols <- sort(myMetaData$Symbol);
+
+
+  ##############
+  # Helper Functions
+
+
+
+  TickValue <- function(Symbol = "@ES"){
+    myMetaData$Amount.Per.Tick[myMetaData$Symbol == Symbol];
+  }
+
+  TicksPerPoint <- function(Symbol = "@ES"){
+    myMetaData$Ticks.Per.Point[myMetaData$Symbol == Symbol];
+  }
+
+  DefaultValue <- function(Symbol = "@ES"){
+    myMetaData$Default.Value[myMetaData$Symbol == Symbol];
   }
 
   ChartSymbol <- function(Symbol = "@ES"){
@@ -117,10 +129,12 @@ CreateFuturesMetaData <- function(file = "FuturesMetaData.csv"){
 
 
 
-  Init();
-
   return(
     list(
+      Symbols = Symbols,
+      TickValue = TickValue,
+      TicksPerPoint = TicksPerPoint,
+      DefaultValue = DefaultValue,
       TradeSymbol = TradeSymbol,
       ChartSymbol = ChartSymbol
 
@@ -128,5 +142,9 @@ CreateFuturesMetaData <- function(file = "FuturesMetaData.csv"){
   )
 
 }
+
+
+FuturesMetaData <- .FuturesMetaData();
+
 
 

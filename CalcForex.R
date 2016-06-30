@@ -13,18 +13,23 @@
     "idForexEntry",
 
     "idForexStopLoss",
-    "idForexStopLossPips",
     "idForexProfitTarget",
-    "idForexProfitTargetPips",
 
     "idForexPositionSize",
     "idForexPositionSizeBox",
     "idForexInPips",
+    "idForexPipsPerPoint",
     "idForexPipValue",
     "idForexPipValueBox",
     "idForexRewardRiskRatio",
     "idForexRewardRiskRatioBox",
-    "idForexRisk"
+    "idForexRisk",
+
+    "idForexStopLossInternal",
+    "idForexProfitTargetInternal",
+    "idForexStopLossPipsInternal",
+    "idForexProfitTargetPipsInternal"
+
   );
   names(myIDs) <- myIDs;
 
@@ -58,8 +63,8 @@
           selectInput(
             myIDs$idForexPair,
             "Currency Pair",
-            choices = list("EURUSD", "USDCAD", "AUDUSD", "GBPUSD"),
-            selected = "EURUSD"
+            choices = ForexMetaData$Symbols,
+            selected = ForexMetaData$Symbols[1]
           ),
           selectInput(
             myIDs$idForexLotSize,
@@ -95,7 +100,7 @@
           title = "Exit",
           width = 6,
 
-          checkboxInput(myIDs$idForexInPips, "In PIPS", value = TRUE),
+          checkboxInput(myIDs$idForexInPips, "In Pips", value = TRUE),
           numericInput(myIDs$idForexStopLoss, label = "Stop Loss", value = 25, width = "50%"),
           numericInput(myIDs$idForexProfitTarget, label = "Profit Target", value = 75, width = "50%")
 
@@ -106,10 +111,11 @@
 
       fluidRow(
         conditionalPanel(
-          condition = myIDs$idDebug,
+          condition = "input.idSuperUser",
           Box$Input(
             title = "Debug Variables",
-            numericInput(myIDs$idForexPipValue, label = "PIP Value", value = 10, width = "50%"),
+            numericInput(myIDs$idForexPipValue, label = "Pip Value", value = 10, width = "50%"),
+            numericInput(myIDs$idForexPipsPerPoint, label = "Pips Per Point", value = ForexMetaData$PipsPerPoint(), width = "50%"),
             numericInput(myIDs$idForexPositionSize, label = "Position Size", value = 10, width = "50%"),
             numericInput(myIDs$idForexRisk, label = "Risk", value = 10, width = "50%"),
             numericInput(myIDs$idForexRewardRiskRatio, label = "Risk Reward Ratio", value = 3, width = "50%"),
@@ -117,8 +123,8 @@
 
             numericInput(myIDs$idForexStopLossInternal, label = "Stop Loss", value = 0.9975, width = "50%"),
             numericInput(myIDs$idForexProfitTargetInternal, label = "Profit Target", value = 1.0075, width = "50%"),
-            numericInput(myIDs$idForexStopLossPipsInternal, label = "Stop Loss (PIPs)", value = 25, width = "50%"),
-            numericInput(myIDs$idForexProfitTargetPipsInternal, label = "Profit Target (PIPs)", value = 75, width = "50%")
+            numericInput(myIDs$idForexStopLossPipsInternal, label = "Stop Loss (Pips)", value = 25, width = "50%"),
+            numericInput(myIDs$idForexProfitTargetPipsInternal, label = "Profit Target (Pips)", value = 75, width = "50%")
 
           )
         )
@@ -130,10 +136,10 @@
 
   UpdateResultBoxes <- function(output, calcs){
 
-    PositionSize <- round(calcs$PositionSize, 2);
-    Entry <- round(calcs$Entry, 2);
-    StopLoss <- round(calcs$StopLoss, 2);
-    ProfitTarget <- round(calcs$ProfitTarget, 2);
+    PositionSize <- round(calcs$PositionSize, 0);
+    Entry <- round(calcs$Entry, 4);
+    StopLoss <- round(calcs$StopLoss, 4);
+    ProfitTarget <- round(calcs$ProfitTarget, 4);
     RewardRiskRatio <- round(calcs$RewardRiskRatio, 2);
     Pip <- round(calcs$Pip, 2);
 
@@ -144,9 +150,9 @@
         {
           Box$TradeHTML(
             PositionSize = PositionSize,
-            Entry = Entry,
-            StopLoss = StopLoss,
-            ProfitTarget = ProfitTarget
+            Entry = FormatForex(Entry),
+            StopLoss = FormatForex(StopLoss),
+            ProfitTarget = FormatForex(ProfitTarget)
           )
         }
       );
@@ -155,7 +161,7 @@
       Box$Render(
         {
           Box$ResultHTML(value = Pip,
-                         title = "PIP",
+                         title = "Pip",
                          subtitle = "Value",
                          icon = Icon$currency$dollar);
         }
@@ -200,6 +206,7 @@
       BuyOrSell = parse_integer(input[[myIDs$idForexBuyOrSell]]);
 
       Pip <-  parse_double(input[[myIDs$idForexPipValue]]);
+      PipsPerPoint <-  parse_double(input[[myIDs$idForexPipsPerPoint]]);
 
       Entry <- parse_double(input[[myIDs$idForexEntry]]);
 
@@ -220,8 +227,8 @@
 
       if (UsePips) {
         if ((StopLossPips > 0) || (ProfitTargetPips > 0)) {
-          StopLoss <- Entry - (BuyOrSell * StopLossPips / 10000);
-          ProfitTarget <- Entry + (BuyOrSell * ProfitTargetPips / 10000);
+          StopLoss <- Entry - (BuyOrSell * StopLossPips / PipsPerPoint);
+          ProfitTarget <- Entry + (BuyOrSell * ProfitTargetPips / PipsPerPoint);
           Risk <- StopLossPips * Pip;
 
         } else {
@@ -231,9 +238,9 @@
         }
       } else {
         if ((StopLoss > 0) || (ProfitTarget > 0)) {
-          StopLossPips <- abs(Entry - StopLoss) * 10000;
-          ProfitTargetPips <- abs(Entry - ProfitTarget) * 10000;
-          Risk <- abs(Entry - StopLoss) * 10000 * Pip;
+          StopLossPips <- abs(Entry - StopLoss) * PipsPerPoint;
+          ProfitTargetPips <- abs(Entry - ProfitTarget) * PipsPerPoint;
+          Risk <- abs(Entry - StopLoss) * PipsPerPoint * Pip;
         } else {
           StopLossPips <- -1;
           ProfitTargetPips <- -1;
@@ -274,6 +281,33 @@
     });
 
 
+    ###################
+    # Observes
+    ###################
+
+
+    # Update exit fields based on whether or not we are using Pips
+
+    observe(
+      {
+        UsePips <- reUsePips();
+
+
+        if (UsePips) {
+          StopLoss <- parse_double(isolate(input[[myIDs$idForexStopLossPipsInternal]]));
+          ProfitTarget <- parse_double(isolate(input[[myIDs$idForexProfitTargetPipsInternal]]));
+        } else {
+          StopLoss <- parse_double(isolate(input[[myIDs$idForexStopLossInternal]]));
+          ProfitTarget <- parse_double(isolate(input[[myIDs$idForexProfitTargetInternal]]));
+        }
+
+        updateNumericInput(session, myIDs$idForexStopLoss, value = StopLoss);
+        updateNumericInput(session, myIDs$idForexProfitTarget, value = ProfitTarget);
+
+      },
+      priority = 10000
+    );
+
 
     observe(
       {
@@ -282,70 +316,58 @@
         Entry <- parse_double(input[[myIDs$idForexEntry]]);
         LotSize <- parse_double(input[[myIDs$idForexLotSize]]);
 
+        PipsPerPoint <- ForexMetaData$PipsPerPoint(ForexPair);
+
         Pip <- NA;
 
         if (LotSize > 0) {
           if (str_detect(ForexPair, 'USD$')){
-            Pip <- LotSize / 10000.0
+            Pip <- LotSize / PipsPerPoint
           } else  if (Entry > 0) {
             if (str_detect(ForexPair, '^USD')){
-              Pip <- (LotSize / 10000.0) / Entry;
+              Pip <- (LotSize / PipsPerPoint) / Entry;
             }
             # need to figure out how to handle non US pairs
           }
+
+          updateNumericInput(session, myIDs$idForexPipsPerPoint, value = PipsPerPoint);
 
           if (!is.na(Pip)){
             updateNumericInput(session, myIDs$idForexPipValue, value = Pip);
           }
 
         }
-      }
+      },
+      priority = 1000
     );
 
 
 
 
-    # Update exit fields based on whether or not we are using Pips
-
-    observe({
-      UsePips <- reUsePips();
-
-      Calcs <- isolate(reCalculator());
-
-      if (Calcs$UsePips) {
-        StopLoss <- Calcs$StopLossPips;
-        ProfitTarget <- Calcs$ProfitTargetPips;
-      } else {
-        StopLoss <- Calcs$StopLoss;
-        ProfitTarget <- Calcs$ProfitTarget;
-      }
-
-      updateNumericInput(session, myIDs$idForexStopLossPips, value = StopLoss);
-      updateNumericInput(session, myIDs$idForexProfitTargetPips, value = ProfitTarget);
 
 
-    })
+    observe(
+      {
+
+        Calcs <- reCalculator();
+
+        # Update state from calculations
+
+        updateNumericInput(session, myIDs$idForexPositionSize, value = Calcs$PositionSize);
+        updateNumericInput(session, myIDs$idForexRisk, value = Calcs$Risk);
+        updateNumericInput(session, myIDs$idForexRewardRiskRatio, value = Calcs$RiskRewardRatio);
+
+        updateNumericInput(session, myIDs$idForexStopLossPipsInternal, value = Calcs$StopLossPips);
+        updateNumericInput(session, myIDs$idForexProfitTargetPipsInternal, value = Calcs$ProfitTargetPips);
+        updateNumericInput(session, myIDs$idForexStopLossInternal, value = Calcs$StopLoss);
+        updateNumericInput(session, myIDs$idForexProfitTargetInternal, value = Calcs$ProfitTarget);
 
 
-    observe({
+        UpdateResultBoxes(output, Calcs);
 
-      Calcs <- reCalculator();
-
-      # Update state from calculations
-
-      updateNumericInput(session, myIDs$idForexPositionSize, value = Calcs$PositionSize);
-      updateNumericInput(session, myIDs$idForexRisk, value = Calcs$Risk);
-      updateNumericInput(session, myIDs$idForexRewardRiskRatio, value = Calcs$RiskRewardRatio);
-
-      updateNumericInput(session, myIDs$idForexStopLossPipsInternal, value = Calcs$StopLossPips);
-      updateNumericInput(session, myIDs$idForexProfitTargetPipsInternal, value = Calcs$ProfitTargetPips);
-      updateNumericInput(session, myIDs$idForexStopLossInternal, value = Calcs$StopLoss);
-      updateNumericInput(session, myIDs$idForexProfitTargetInternal, value = Calcs$ProfitTarget);
-
-
-      UpdateResultBoxes(output, Calcs);
-
-    });
+      },
+      priority = 10
+    );
 
   };
 

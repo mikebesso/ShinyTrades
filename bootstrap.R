@@ -32,6 +32,8 @@ source("Console.R");
 
 source("Indicators.R")
 source("FuturesMetaData.R");
+source("ForexMetaData.R");
+source("EquitiesMetaData.R");
 source("Scraper.R");
 source("TradeStation.R");
 source("Ticker.R");
@@ -41,6 +43,8 @@ source("Chart.R");
 source("BackTest.R");
 source("Calculators.R");
 source("CalcForex.R");
+source("CalcFutures.R");
+source("CalcEquities.R");
 
 source("SideBar.R");
 
@@ -78,7 +82,6 @@ options(shiny.error=browser)
 
 #LevelEditor <- CreateLevelEditor(LevelData$MetaData());
 
-FuturesMetaData <- CreateFuturesMetaData();
 
 if (interactive()){
 

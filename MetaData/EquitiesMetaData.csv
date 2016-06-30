@@ -1,0 +1,12 @@
+Market,Symbol,Charting.Symbol,Default.Value,Ticks.Per.Point,Amount.Per.Tick
+NASDAQ,QQQ,QQQ,50,100,0.01
+S&P,SPY,SPY,50,100,0.01
+Russel,IWM,IWM,50,100,0.01
+Treasury 20 Year,TLT,TLT,50,100,0.01
+US Oil,USO,USO,50,100,0.01
+Gold,GLD,GLD,50,100,0.01
+US Natural Gas,UNG,UNG,50,100,0.01
+Energy,XLE,XLE,50,100,0.01
+Finance,XLF,XLF,50,100,0.01
+Healthcare,XLV,XLV,50,100,0.01
+Apple,AAPL,AAPL,50,100,0.01
