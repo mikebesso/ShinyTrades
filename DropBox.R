@@ -83,11 +83,31 @@ if(!exists("App")){
 
   WriteScrapedCleanFile <- function(df, AsOfDate = Calendar$CurrentWeekday()){
 
-    if (AsOfDate == Calendar$CurrentWeekday()){
-        DropBox$WriteCSV(df[,c(-1,-2)], "mml.csv", postpend = "EOF");
-    }
 
     DropBox$WriteCSV(df, BuildScraperCleanFilename(AsOfDate));
+
+
+    if (AsOfDate == Calendar$CurrentWeekday()){
+
+      mml <- df[,c(-1,-2)];
+
+      timestamp <- now();
+      newrow <- nrow(mml) + 1;
+
+      mml[newrow, ] <- rep(NA, ncol(mml));
+      mml[newrow, 1] = "EOF";
+      mml[newrow, 2] = year(timestamp);
+      mml[newrow, 3] = month(timestamp);
+      mml[newrow, 4] = day(timestamp);
+      mml[newrow, 5] = hour(timestamp);
+      mml[newrow, 6] = minute(timestamp);
+      mml[newrow, 7] = round(second(timestamp), 0);
+
+      mml[newrow, 8:ncol(mml)] <- 0;
+
+      DropBox$WriteCSV(mml, "mml.csv");
+    }
+
 
   }
 
