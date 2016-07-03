@@ -20,6 +20,7 @@
       sidebarMenu(
         id = myIDs$idideBarMenu,
 
+
         menuItem(
           text = "Position Size Calculators",
           ForexCalculator$UI.MenuItem,
@@ -35,7 +36,10 @@
         menuItem(
           text = "Maintenance",
           Scraper$UI.MenuItem
-        )
+        ),
+
+        Docs$UI.MenuItem
+
       ),
 
       conditionalPanel(

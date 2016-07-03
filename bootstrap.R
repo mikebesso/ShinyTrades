@@ -46,6 +46,7 @@ source("CalcForex.R");
 source("CalcFutures.R");
 source("CalcEquities.R");
 
+source("Docs.R");
 source("SideBar.R");
 
 

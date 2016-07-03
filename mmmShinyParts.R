@@ -165,3 +165,33 @@ Box <-
   )
 
 
+
+# need to add check for file existence
+
+.DocTabItem <- function(IncludeFunction, extension){
+  f <- function(tabName, filename = NULL){
+    if (is.null(filename)){
+      filename <- file.path("docs", paste0(tabName, ".", extension))
+    }
+    tabItem(
+      tabName = tabName,
+      fluidRow(
+        column(
+          width = 12,
+          IncludeFunction(filename)
+        )
+      )
+    )
+  }
+}
+
+
+DocTabs <- list(
+  Markdown = .DocTabItem(includeMarkdown, "md"),
+  HTML = .DocTabItem(includeHTML, "html"),
+  Text = .DocTabItem(includeText, "txt")
+)
+
+
+
+
