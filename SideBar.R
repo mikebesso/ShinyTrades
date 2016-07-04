@@ -20,13 +20,8 @@
       sidebarMenu(
         id = myIDs$idideBarMenu,
 
+        Calcs$UI.MenuItem,
 
-        menuItem(
-          text = "Position Size Calculators",
-          ForexCalculator$UI.MenuItem,
-          FuturesCalculator$UI.MenuItem,
-          EquitiesCalculator$UI.MenuItem
-        ),
 
         menuItem(
           text = "Back Testing",

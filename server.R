@@ -16,10 +16,7 @@ shinyServer(
 
     Console$Server(input, output, session);
 
-    FuturesCalculator$Server(input, output, session);
-    ForexCalculator$Server(input, output, session);
-    EquitiesCalculator$Server(input, output, session);
-
+    Calcs$Server(input, output, session);
 
   }
 

@@ -36,20 +36,16 @@ Header <- dashboardHeader(
 # );
 
 
-
 Body = dashboardBody(
   withMathJax(),
-  tabItems(
-    FuturesCalculator$UI.Page,
-    ForexCalculator$UI.Page,
-    EquitiesCalculator$UI.Page,
+
+  #this used to be tabItems... but the assert fails when you pass in a list.
+  div(
+    class = "tab-content",
+    Calcs$UI.Page(),
     Scraper$UI.Page,
     BackTest$UI.Page,
     Docs$UI.Page(),
-
-    # LevelViewer$Tab(),
-    # LevelEditor$EditorTab()
-
     Console$UI.Page
   )
 );

@@ -41,10 +41,7 @@ source("Strategy.R");
 source("StrategyXL.R");
 source("Chart.R");
 source("BackTest.R");
-source("Calculators.R");
-source("CalcForex.R");
-source("CalcFutures.R");
-source("CalcEquities.R");
+source("Calcs.R");
 
 source("Docs.R");
 source("SideBar.R");
