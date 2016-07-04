@@ -2,3 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+<<<<<<< HEAD
+=======
+_site/
+.DS_Store
+.Ruserdata
+>>>>>>> 779517955857c37b97738d338a86c99921f288f1

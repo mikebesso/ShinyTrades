@@ -1,0 +1,22 @@
+name: "ShinyTrades-Project"
+output_dir: "."
+navbar:
+  title:  ShinyTrades
+  left:
+    - text: "Home"
+      href: "index.html"
+    - text: "Resources"
+      menu:
+        - text:  "Mutual Funds"
+        - text: "X-Ray"
+          href: "xray.html"
+    - text: "Tasks"
+      menu:
+      - text: "401K"
+      - text: "Balance"
+        href: "balance401K.html"
+      - text: "Understand Fees"
+        href: "fees401K.html"
+  right:
+    - icon: fa-question fa-lg
+      href: "about.html"
