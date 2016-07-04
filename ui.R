@@ -44,7 +44,7 @@ Body = dashboardBody(
     class = "tab-content",
     Calcs$UI.Page(),
     Scraper$UI.Page,
-    BackTest$UI.Page,
+    BackTest$UI.Page(),
     Docs$UI.Page(),
     Console$UI.Page
   )

@@ -18,15 +18,12 @@
       sidebarSearchForm(textId = myIDs$idSearchText, buttonId = myIDs$idSearchButton, label = "Search or Command..."),
 
       sidebarMenu(
-        id = myIDs$idideBarMenu,
+        id = myIDs$idSideBarMenu,
 
         Calcs$UI.MenuItem,
 
+        BackTest$UI.MenuItem,
 
-        menuItem(
-          text = "Back Testing",
-          BackTest$UI.MenuItem
-        ),
 
         menuItem(
           text = "Maintenance",

@@ -3,46 +3,76 @@
 
   PageName <- "backtest";
 
-  UI.MenuItem <- menuSubItem("Back Test", tabName = PageName);
+  UI.MenuItem <-
+    menuItem(
+      text = "Back Testing",
+      menuSubItem(text = "Docs", tabName = "BackTest", selected = TRUE),
+      menuSubItem(
+        text = "Data Set",
+        tabName = "btDataSet"
+      ),
+      menuSubItem(
+        text = "Parameters",
+        tabName = "btParameters"
+      ),
+      menuSubItem(
+        text = "Chart",
+        tabName = "btChart"
+      ),
+      menuSubItem(
+        text = "Parameters",
+        tabName = "btTrades"
+      )
+    );
 
-  UI.Page <-
+
+  UI.Page <- function(){
+
+    list(
+      DocTabs$Markdown("BackTest"),
       tabItem(
-        PageName,
+        tabName = "btDataSet",
+        fluidRow(
+          box(
+            title = "Data Set",
+            width = 6,
+            selectInput("symb", "Symbol", list("@ES", "@GC", "@NQ", "AUDUSD", "EURJPY", "EURUSD", "GBPUSD", "USDCAD", "USDJPY", "GLD", "IWM", "QQQ", "TLT", "USO", "SPY", "XLE", "XLF", "XLV"), selected = "SPY")
+          ),
 
+          box(
+            title = "Show",
+            width = 6,
+            checkboxInput("processed", "Orders", value = FALSE),
+            checkboxInput("addVo", "Volume", value = TRUE),
+            checkboxInput("addXL", "XL", value = TRUE),
+            checkboxInput("addBB", "Bollinger Bands", value = TRUE),
+            checkboxInput("addMACD", "MACD", value = FALSE)
+          )
+        )
+      ),
+
+
+      tabItem(
+        tabName = "btChart",
         fluidRow(
           box(
             title = 'Chart',
             width = 12,
-            plotOutput('plot')
-          )
-        ),
-
-        fluidRow(
-
-            box(
-              title = "Data Set",
-              width = 6,
-              selectInput("symb", "Symbol", list("@ES", "@GC", "@NQ", "AUDUSD", "EURJPY", "EURUSD", "GBPUSD", "USDCAD", "USDJPY", "GLD", "IWM", "QQQ", "TLT", "USO", "SPY", "XLE", "XLF", "XLV"), selected = "SPY"),
-              dateRangeInput(
-                "zoom",
-                label=h5("Zoom Chart"),
-                start = "2016-01-01",
-                end = as.character(Sys.Date())
-              ),
-              actionButton('backtest_refresh', 'Submit')
-            ),
-
-            box(
-             title = "Show",
-             width = 6,
-             checkboxInput("processed", "Orders", value = FALSE),
-             checkboxInput("addVo", "Volume", value = TRUE),
-             checkboxInput("addXL", "XL", value = TRUE),
-             checkboxInput("addBB", "Bollinger Bands", value = TRUE),
-             checkboxInput("addMACD", "MACD", value = FALSE)
+            actionButton('backtest_refresh', 'Build Chart'),
+            plotOutput('plot', height = "700px"),
+            dateRangeInput(
+              "zoom",
+              label=h5("Zoom Chart"),
+              start = "2016-01-01",
+              end = as.character(Sys.Date())
             )
-          ),
+          )
+        )
+      ),
 
+
+      tabItem(
+        tabName = "btParameters",
           fluidRow(
             box(
               title = "Strategy Parameters",
@@ -102,18 +132,26 @@
               helpText("Explain exit strategies.")
               )
           )
+        )
       ),
 
-      fluidRow(
-        box(
-          title = "Log",
-          width = 12,
 
-          htmlOutput("idTransLog", container = tags$div, style = "overflow:scroll;height:500px")
+    tabItem(
+      tabName = "btTrades",
+          fluidRow(
+          box(
+            title = "Log",
+            width = 12,
+
+            htmlOutput("idTransLog", container = tags$div, style = "overflow:scroll;height:500px")
+          )
+
         )
 
+
       )
-    );
+    )
+  };
 
 
   Server <- function(input, output, session){
@@ -161,6 +199,13 @@
 
       Symbol <- args$symbol;
       data <- dataInput()$data;
+      validate(
+        need(str_length(input$zoom[1]) == 10, "Date format invalid"),
+        need(str_length(input$zoom[2]) == 10, "Date format invalid"),
+        need(input$zoom[2] > input$zoom[1], "End date is earlier than start date"),
+        need(difftime(input$zoom[2], input$zoom[1], "days") > 14, "date range less the 14 days")
+      );
+
 
 
       Chart(
