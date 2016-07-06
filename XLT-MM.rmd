@@ -1,0 +1,119 @@
+---
+title: "MasterMind and XLT Ideas"
+author: "Mike Besso"
+date: "May 25, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 2016-05-24 Energy
+
+## @NG
+
+### Fundamentals
+
+#### Seasions (2)
+
+Corresponding technical indictors are:
+
+* Supply Zone Swing
+* Supply Zone Daily
+
+#### Injection 
+
+April - October
+
+Pulling gas out of ground and storing it
+
+#### Demand/Heat Season
+
+November to March
+
+
+### Inventories
+
+EIA.GOV - reports on inventories in the US.  a weekly report
+
+Technical indicators include:
+
+* Current Price
+
+Price is determined by inventories, current and expected.
+
+
+Currently, we appear to be balanced.  That is, we have enough gas in storage to meet needs.  Therefore, price is bearish.
+
+But, inventory is currently at historic highs.  So, production has slowed down.  Some producers have gone off line to wait for prices to rise.
+
+Take a look at volatility of current contract versus future contracts.
+
+
+Check out PIRA report.  (PIRA.com?)
+
+Check out rig and well counts.
+
+
+At some point, industrial demand is going to force prices up since production is down.
+
+
+Forward contacts tell us prices are going up.
+
+Wealth:  buy dips in forward future contracts.  Jan/Mar 17.  or, trade options
+
+
+
+### Weather
+
+
+Impact of El Nino... and what happens after
+
+
+
+
+## Other Stuff
+
+Recent rally on back of large speculators.  But, producers are not yet producing, so probably short-lived.
+
+Oil is currently being stored offshore at a loss waiting for prices to go up.
+
+How do we get in front of the future wave with stocks.
+
+Go after "yeild".  But risk is bankruptcy.
+
+Chesapeake (CHK), while it might not go bankrupt, some sort of restructuring is likely.  Stockholders usually lose during restructuring.  Given current cost, this would be highly speculative.
+
+
+Comparative Relative Strength Analysis.  
+
+* 26 Week
+* Compare energy stocks to S&P
+* Compare to well heads
+
+Look for high yields with high strength.
+
+Remember, future dividends are NOT guaranteed.
+
+Wellheads (etf:  FCG)
+
+MidStream players (etf: ENFR) are transport/pipeline.  If they can keep their pipelines full, they keep making money.  Pipelines are currently full.  Industrial demand is remaining strong.
+
+MidStream players are being pulled down with the market.  So probably first to recover.
+
+Even though Williams has under performed the market, the yield is good.  
+
+consider: 
+
+DPM - yeild 10%
+OKE
+OKS
+WMB
+
+
+probability of bankruptcy - macroaxis
+
+over 80% usually indicates bankruptcy likely within 2 years
+
+
