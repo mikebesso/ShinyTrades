@@ -2,8 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-<<<<<<< HEAD
-=======
 DropBoxCache/
 droptoken.RDS
 rsconnect/
@@ -12,4 +10,3 @@ rsconnect/
 dropbox/
 README.html
 GIT_Commands.html
->>>>>>> 73c7079c0f92c559f6a281490b2977267d948cf4
