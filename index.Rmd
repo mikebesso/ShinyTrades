@@ -6,4 +6,11 @@ output:
     toc_float: true
 ---
 
-# Introduction
+# Welcome
+
+This is the ShinyTrades companion web site.  Though, not much here yet.
+
+The first thing I am going to document is how to use [Morningstar's](www.morningstar.com) [Instant X-Ray Tool](http://portfolio.morningstar.com/RtPort/Free/InstantXRayDEntry.aspx) to understand the hidden features of mutual funds:
+
+* [Hidden Fees](fees401K.html)
+* [Balance](balance401K.html)
