@@ -11,7 +11,7 @@
 
 
 
-<title>ShineTrades</title>
+<title>Position Size Calculators</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
@@ -328,19 +328,104 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">ShineTrades</h1>
+<h1 class="title toc-ignore">Position Size Calculators</h1>
 
 </div>
 
 
-<div id="welcome" class="section level1">
-<h1>Welcome</h1>
-<p>This is the ShinyTrades companion web site. Though, not much here yet.</p>
-<p>The first thing I am going to document is how to use <a href="www.morningstar.com">Morningstar’s</a> <a href="http://portfolio.morningstar.com/RtPort/Free/InstantXRayDEntry.aspx">Instant X-Ray Tool</a> to understand the hidden features of mutual funds:</p>
+<center>
+<h1>
+Position Size Calculators
+</h1>
+</center>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Successful trading plans and strategies include a rules for determining the size of a trade.<br />
+There are three obvious position sizing strategies:</p>
 <ul>
-<li><a href="fees401K.html">Hidden Fees</a></li>
-<li><a href="balance401K.html">Balance</a></li>
+<li><p>Constant number of shares/contracts/lots It is a stretch to call this a stategy. Nonetheless, many traders just buy and sell the same number of shares/contracts or lots regardless of the the actual risk or potential reward.</p></li>
+<li><p>Constant trade total price While there is a bit more calculation to this strategy, it still does not take into account the actual risk or potential reward.</p></li>
+<li><p>Constant risk Most successful strategies rely taking the same amount of risk on every trade. Depending on what is being traded, this can be an interesting calculation.</p></li>
 </ul>
+<p>The position size calculators in this app support the constant risk strategy.</p>
+<div id="definitions" class="section level2">
+<h2>Definitions</h2>
+<p>Before we get started, let’s define some terminology. First, for efficiency of explanation, we will assume:</p>
+<ul>
+<li>Shares and lots are synonymous with contracts. We will use the term “contract” in the discussion below.</li>
+<li>PIPS is synonymous with ticks. We will use the term “tick” in the the discussion below.</li>
+</ul>
+<p>While these assumptions might not be “exactly” true. These concepts are similar enough that we can avoid repeating the same discussion three times.</p>
+</div>
+<div id="account-size" class="section level2">
+<h2>Account Size</h2>
+<blockquote>
+<p>Amount of money available to trade.</p>
+</blockquote>
+</div>
+<div id="max-risk" class="section level2">
+<h2>Max Risk (%)</h2>
+<blockquote>
+The percentage of the account to risk on each trade
+</td>
+</blockquote>
+</div>
+<div id="point" class="section level2">
+<h2>Point</h2>
+<blockquote>
+The integral unit of measurement of value of each contract
+</td>
+</blockquote>
+</div>
+<div id="ticks-per-point" class="section level2">
+<h2>Ticks per Point</h2>
+<blockquote>
+The number of increments between points
+</td>
+</blockquote>
+</div>
+<div id="tick-value" class="section level2">
+<h2>Tick Value</h2>
+<blockquote>
+<p>The dollar value of each tick</p>
+</blockquote>
+</div>
+<div id="calculations" class="section level2">
+<h2>Calculations</h2>
+<div id="max-risk-1" class="section level3">
+<h3>Max Risk</h3>
+<p>The maximum risk we are willing to take on this trade based on our trading rules.<br />
+Maximium risk is calculated as follows:</p>
+<p><math display = "block"> <mi>Max Risk</mi> <mo>=</mo> <mi>Account Size</mi> <mo>×</mi> <mi>Max Risk (%)</mi> </math></p>
+</div>
+<div id="risk-per-contract" class="section level3">
+<h3>Risk Per Contract</h3>
+<p>The risk of trading a single contract.</p>
+<p><math display = "block"> <mi>Risk Per Contract</mi> <mo>=</mo> <mrow> <mi>Pip Value</mi> <mo>×</mo> <mrow> <mfrac numalign = "left"> <mfenced open = "|" close = "|" separators = ""> <mi>[Entry]</mi> <mo>−</mi> <mi>Stop Loss</mi> </mfenced> <mrow> <mspace width = "3em" /><mi>Ticks</mi><mspace width = "3em" /> </mrow> </mfrac> </mrow> </mrow> </math></p>
+</div>
+<div id="position-size" class="section level3">
+<h3>Position Size</h3>
+<p>Number of contracts to buy or seel based on risk management rules. <math display = "block"> <mi>S</mi> <mo>=</mo> <mfrac> <msub><mi>R</mi><mi>T</mi></msub> <msub><mi>R</mi><mi>C</mi></msub> </mfrac> </math> Where <math display = "block"> <mi>S</mi> <mo>=</mo> <mtext>Position Size</mtext> </math> <math display = "block"> <msub><mi>R</mi><mi>C</mi></msub> <mo>=</mo> <mtext>Risk Per Contract</mtext> </math> <math display = "block"> <msub><mi>R</mi><mi>T</mi></msub> <mo>=</mo> <mtext>Max Risk Per Trade</mtext> </math></p>
+<p>In the case of Equities, these calculations are simple:</p>
+<ul>
+<li>There are 100 ticks per point</li>
+<li>Each has a value of $0.01</li>
+</ul>
+<p>Therefore, each point is $1.00. Though, we prefer to trade in blocks of 100 shares.</p>
+<p>In the case of FOREX, these calculations depend on:</p>
+<ul>
+<li>Lot Size (Standard, Mini, Micro)</li>
+<li>Number of PIPs per Point</li>
+<li>PIP Value (a calculation that depends on the currency pair and lot size)</li>
+</ul>
+<p>In the case of Futures, these calculations depend on two concepts that are attributes of what is being traded:</p>
+<ul>
+<li>Number of Ticks per Point</li>
+<li>Tick Value</li>
+</ul>
+<p>We use position size calculators to determine the appropriate position size for a trade based on risk management rules.</p>
+</div>
+</div>
 </div>
 
 

@@ -12,6 +12,9 @@ navbar:
           href: "xray.html"
     - text: "Tasks"
       menu:
+      - text: "Trade Management"
+      - text: "Position Sizing"
+        href: "positionsizecalculators.html"
       - text: "401K"
       - text: "Balance"
         href: "balance401K.html"

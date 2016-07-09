@@ -1,0 +1,7 @@
+html_document:
+  self_contained: false
+  theme:  united
+  highlight:  textmate
+  toc:  true
+  toc_float: true
+  css:  styles.css
