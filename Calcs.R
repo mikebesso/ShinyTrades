@@ -19,7 +19,11 @@ source("CalcEquities.R");
   UI.MenuItem <-
     menuItem(
       text = "Position Size Calculators",
-      menuSubItem(text = "Docs", tabName = "PositionCalculators", selected = TRUE),
+      menuSubItem(
+        text = "Docs",
+        icon = Icon$ui$help,
+        href = "http://mikebesso.github.io/ShinyTrades/positionsizecalculators.html"
+      ),
       ForexCalculator$UI.MenuItem,
       FuturesCalculator$UI.MenuItem,
       EquitiesCalculator$UI.MenuItem

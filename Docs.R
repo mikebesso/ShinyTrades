@@ -12,8 +12,14 @@
   UI.MenuItem <-
     menuItem(
       text = "Documentation",
-      menuSubItem(text = "Welcome", tabName = "Welcome", selected = TRUE)
+      menuSubItem(text = "Welcome", tabName = "Welcome", selected = TRUE),
 
+
+      menuItem(
+        text = "Companion Website",
+        icon = Icon$ui$help,
+        href = "http://mikebesso.github.io/ShinyTrades"
+      )
     )
 
   UI.Page <- function(){

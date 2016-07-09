@@ -15,13 +15,11 @@
 
      dashboardSidebar(
       shinyjs::useShinyjs(),
-      sidebarSearchForm(textId = myIDs$idSearchText, buttonId = myIDs$idSearchButton, label = "Search or Command..."),
 
       sidebarMenu(
         id = myIDs$idSideBarMenu,
 
         Calcs$UI.MenuItem,
-
         BackTest$UI.MenuItem,
 
 
@@ -33,6 +31,8 @@
         Docs$UI.MenuItem
 
       ),
+
+      sidebarSearchForm(textId = myIDs$idSearchText, buttonId = myIDs$idSearchButton, label = "Search or Command..."),
 
       conditionalPanel(
         "1 == 2",
