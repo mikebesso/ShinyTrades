@@ -20,11 +20,22 @@
     as.double(myMetaData$Pips.Per.Point[myMetaData$Symbol == Symbol]);
   }
 
+  DefaultValue <- function(Symbol = "AUDUSD"){
+    as.double(myMetaData$Default.Value[myMetaData$Symbol == Symbol]);
+  }
+
+
 
   return(
     list(
       Symbols = Symbols,
+
+      DefaultValue = DefaultValue,
+
+      # These are synomous
+      TicksPerPoint = PipsPerPoint,
       PipsPerPoint = PipsPerPoint
+
 
     )
   )

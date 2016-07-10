@@ -47,8 +47,8 @@ CalculatePosition <- function(
 
     if (TradeParametersValid){
       if ((StopLoss > 0) || (ProfitTarget > 0)) {
-        StopLossTicks <- abs(Entry - StopLoss) * TicksPerPoint;
-        ProfitTargetTicks <- abs(Entry - ProfitTarget) * TicksPerPoint;
+        StopLossTicks <- round(abs(Entry - StopLoss) * TicksPerPoint, 0);
+        ProfitTargetTicks <- round(abs(Entry - ProfitTarget) * TicksPerPoint, 0);
         Risk <- abs(Entry - StopLoss) * TicksPerPoint * TickValue;
       }
     }
