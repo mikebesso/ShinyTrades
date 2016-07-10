@@ -3,11 +3,16 @@ output_dir: "."
 navbar:
   title:  ShinyTrades
   left:
-    - text: "Home"
+    - text: "Plan"
+      menu:
+        - text: "Goals"
+          href: "goals.html"
       href: "index.html"
     - text: "Resources"
       menu:
         - text:  "Mutual Funds"
+        - text: "Vanguard Funds"
+          href: "vanguardfunds.html"
         - text: "X-Ray"
           href: "xray.html"
     - text: "Tasks"

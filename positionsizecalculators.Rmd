@@ -58,39 +58,82 @@ The maximum risk we are willing to take on this trade based on our trading rules
 Maximium risk is calculated as follows:
 
 <math display = "block">
-  <mi>Max Risk</mi>
+  <msub><mi>R</mi><mi>T</mi></msub>
   <mo>&equals;</mo>
-  <mi>Account Size</mi>
+  <msub><mi>S</mi><mi>A</mi></msub>
   <mo>&times;</mi>
-  <mi>Max Risk (%)</mi>
+  <msub><mi>%R</mi><mi>T</mi></msub>
 </math>
 
+Where
+<math display = "block">
+  <msub><mi>R</mi><mi>T</mi></msub>
+  <mo>&equals;</mo>
+  <mtext>Max Risk per Trade</mtext>
+</math>
+<math display = "block">
+  <msub><mi>S</mi><mi>A</mi></msub>
+  <mo>&equals;</mo>
+  <mtext>Account Size</mtext>
+</math>
+<math display = "block">
+  <msub><mi>%R</mi><mi>T</mi></msub>
+  <mo>&equals;</mo>
+  <mtext>Max Risk per Trade as a percent</mtext>
+</math>
 
 ### Risk Per Contract
 
 The risk of trading a single contract.
 
 <math display = "block">
-  <mi>Risk Per Contract</mi>
+  <msub><mi>R</mi><mi>C</mi></msub>
   <mo>&equals;</mo>
   <mrow>
-    <mi>Pip Value</mi>
+    <msub><mi>V</mi><mi>t</mi></msub>
     <mo>&times;</mo>
     <mrow>
       <mfrac numalign = "left">
         <mfenced open = "|" close = "|" separators = "">
-          <mi>[Entry]</mi>
+          <msub><mi>P</mi><mi>E</mi></msub>
           <mo>&minus;</mi>
-          <mi>Stop Loss</mi>
+          <msub><mi>P</mi><mi>SL</mi></msub>
         </mfenced>
         <mrow>
-          <mspace width = "3em" /><mi>Ticks</mi><mspace width = "3em" />
+          <msub><mi>T</mi><mi>Pt</mi></msub>
         </mrow>
       </mfrac>
     </mrow>
   </mrow>
 </math>
 
+Where
+<math display = "block">
+  <msub><mi>V</mi><mi>t</mi></msub>
+  <mo>&equals;</mo>
+  <mtext>Tick (or PIP) Value</mtext>
+</math>
+<math display = "block">
+  <msub><mi>R</mi><mi>C</mi></msub>
+  <mo>&equals;</mo>
+  <mtext>Risk Per Contract</mtext>
+</math>
+<math display = "block">
+  <msub><mi>P</mi><mi>SL</mi></msub>
+  <mo>&equals;</mo>
+  <mtext>Price of Stop Loss</mtext>
+</math>
+<math display = "block">
+  <msub><mi>P</mi><mi>E</mi></msub>
+  <mo>&equals;</mo>
+  <mtext>Entry Price</mtext>
+</math>
+<math display = "block">
+  <msub><mi>T</mi><mi>Pt</mi></msub>
+  <mo>&equals;</mo>
+  <mtext>Ticks per Point</mtext>
+</math>
+ 
 
 ### Position Size
 

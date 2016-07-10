@@ -275,8 +275,17 @@ div.tocify {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="index.html">Home</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Plan
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="goals.html">Goals</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -286,6 +295,9 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Mutual Funds</li>
+    <li>
+      <a href="vanguardfunds.html">Vanguard Funds</a>
+    </li>
     <li>
       <a href="xray.html">X-Ray</a>
     </li>
@@ -396,12 +408,14 @@ The number of increments between points
 <h3>Max Risk</h3>
 <p>The maximum risk we are willing to take on this trade based on our trading rules.<br />
 Maximium risk is calculated as follows:</p>
-<p><math display = "block"> <mi>Max Risk</mi> <mo>=</mo> <mi>Account Size</mi> <mo>×</mi> <mi>Max Risk (%)</mi> </math></p>
+<p><math display = "block"> <msub><mi>R</mi><mi>T</mi></msub> <mo>=</mo> <msub><mi>S</mi><mi>A</mi></msub> <mo>×</mi> <msub><mi>%R</mi><mi>T</mi></msub> </math></p>
+<p>Where <math display = "block"> <msub><mi>R</mi><mi>T</mi></msub> <mo>=</mo> <mtext>Max Risk per Trade</mtext> </math> <math display = "block"> <msub><mi>S</mi><mi>A</mi></msub> <mo>=</mo> <mtext>Account Size</mtext> </math> <math display = "block"> <msub><mi>%R</mi><mi>T</mi></msub> <mo>=</mo> <mtext>Max Risk per Trade as a percent</mtext> </math></p>
 </div>
 <div id="risk-per-contract" class="section level3">
 <h3>Risk Per Contract</h3>
 <p>The risk of trading a single contract.</p>
-<p><math display = "block"> <mi>Risk Per Contract</mi> <mo>=</mo> <mrow> <mi>Pip Value</mi> <mo>×</mo> <mrow> <mfrac numalign = "left"> <mfenced open = "|" close = "|" separators = ""> <mi>[Entry]</mi> <mo>−</mi> <mi>Stop Loss</mi> </mfenced> <mrow> <mspace width = "3em" /><mi>Ticks</mi><mspace width = "3em" /> </mrow> </mfrac> </mrow> </mrow> </math></p>
+<p><math display = "block"> <msub><mi>R</mi><mi>C</mi></msub> <mo>=</mo> <mrow> <msub><mi>V</mi><mi>t</mi></msub> <mo>×</mo> <mrow> <mfrac numalign = "left"> <mfenced open = "|" close = "|" separators = ""> <msub><mi>P</mi><mi>E</mi></msub> <mo>−</mi> <msub><mi>P</mi><mi>SL</mi></msub> </mfenced> <mrow> <msub><mi>T</mi><mi>Pt</mi></msub> </mrow> </mfrac> </mrow> </mrow> </math></p>
+<p>Where <math display = "block"> <msub><mi>V</mi><mi>t</mi></msub> <mo>=</mo> <mtext>Tick (or PIP) Value</mtext> </math> <math display = "block"> <msub><mi>R</mi><mi>C</mi></msub> <mo>=</mo> <mtext>Risk Per Contract</mtext> </math> <math display = "block"> <msub><mi>P</mi><mi>SL</mi></msub> <mo>=</mo> <mtext>Price of Stop Loss</mtext> </math> <math display = "block"> <msub><mi>P</mi><mi>E</mi></msub> <mo>=</mo> <mtext>Entry Price</mtext> </math> <math display = "block"> <msub><mi>T</mi><mi>Pt</mi></msub> <mo>=</mo> <mtext>Ticks per Point</mtext> </math></p>
 </div>
 <div id="position-size" class="section level3">
 <h3>Position Size</h3>

@@ -1,3 +1,17 @@
 .tocify{
   font-size: 9pt;
 }
+
+.title{
+  text-align: center;
+}
+
+.caption{
+  padding-bottom: 2em;
+  font-style: italic;
+}
+
+
+#TOC{
+  border-width: 1;
+}

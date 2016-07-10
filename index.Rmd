@@ -1,16 +1,30 @@
 ---
 title: "ShineTrades"
-output:
-  html_document:
-    toc:  true
-    toc_float: true
 ---
 
 # Welcome
 
-This is the ShinyTrades companion web site.  Though, not much here yet.
+Welcome to the companion website to the ShinyTrades web app.  This experimental web application is for educational (and if you are cruel, entertainment)
+purposes only.  As such, it is imperative that you do NOT base any investment decisions on what you find here.
 
-The first thing I am going to document is how to use [Morningstar's](www.morningstar.com) [Instant X-Ray Tool](http://portfolio.morningstar.com/RtPort/Free/InstantXRayDEntry.aspx) to understand the hidden features of mutual funds:
+While I hope to be able to eventually provide services and education to others, that is a long way off.
+
+I have a day job and this project is very much an after hours endeavor.  
+Therefore, most published versions will be for educational purposes.  As such, what you see has not been validated and is likely buggy.
+
+
+# First Steps
+
+To get started, I am documenting a few key things.
+
+##  Plan
+
+I have started my "plan" by identifying some [goals](goals.html).
+
+
+##  Understanding Mutual Fund Fees and Diversity
+
+[Morningstar](www.morningstar.com) provides a great [Instant X-Ray Tool](http://portfolio.morningstar.com/RtPort/Free/InstantXRayDEntry.aspx) to help us understand the what is under the hood of our mutual funds:
 
 * [Hidden Fees](fees401K.html)
 * [Balance](balance401K.html)
