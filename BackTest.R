@@ -6,7 +6,11 @@
   UI.MenuItem <-
     menuItem(
       text = "Back Testing",
-      menuSubItem(text = "Docs", tabName = "BackTest", selected = TRUE),
+      menuSubItem(
+        text = "Docs",
+        icon = Icon$ui$help,
+        href = "http://mikebesso.github.io/ShinyTrades/backtesting.html"
+      ),
       menuSubItem(
         text = "Data Set",
         tabName = "btDataSet"

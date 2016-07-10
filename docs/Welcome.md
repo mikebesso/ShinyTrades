@@ -12,56 +12,10 @@ Therefore, most published versions will be for educational purposes.  As such, w
 
 ## Instructions
 
-To get started, use the links at the left.  I will be adding documentation as I go along.
+To get started, use the links at the left.  While I will try to make each page user-friendly, you can find the detailed documentation on the 
+[companion website](http://mikebesso.github.io/ShinyTrades)
 
-## Goals
-
-### Continuing Education
-
-I am building this app as part of my continuing education in the following areas:
-
-* Data Science
-* Programing R
-    * Create reusuable packages
-    * Reproducable research
-    * Interactive web applications
-* Programing TradeStation's Easy Language
-    * Integrating Easy Language with R
-    * Building indicators and show-mes.
-    * Building strategies
-* System integration
-    * Using drop box
-* Collaboration with others through
-    * GitHub
-    * StackExchange
-    * Writing
-* Trading
-    * Technical trading analysis
-    * Trading strategy implementation and back testing
-    * Trading plan implementation and measurement
-
-### Trading Plan
-
-After I get further along with this project, I hope to be able to use this app as part of my trading plan.
-
-
-### Retirement Plan
-
-While retirement is still a ways off, it is likely that I will still need to generate some form of income.  
-I believe this effort will prepare me for eventual retirement.  At this point, I am considering the following options for my retirement plan:
-
-* Gig consulting (for profit and as volunteer)
-    * SQL 
-    * R
-    * Easy Language
-    * Custom indicators
-    * Customer trading strategies
-    * Trading strategy backtesting
-* Trading
-* Writing How-tos
-
-
-
+The search box on the left is a backdoor for me during the early development process.  It will disappear soon.  
 
 ## Opportunities for Others
 
