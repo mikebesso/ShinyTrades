@@ -81,7 +81,7 @@
           width = 6,
 
           selectInput(myIDs$idEquitiesBuyOrSell, "Buy Or Sell", choices = list(Buy = 1, Sell = -1), width = "50%"),
-          numericInput(myIDs$idEquitiesEntry, "Price", 1.0, width = "50%", step = 0.0005)
+          numericInput(myIDs$idEquitiesEntry, "Price", 50.0, width = "50%", step = 0.0005)
         ),
 
         Box$Input(
@@ -89,8 +89,8 @@
           width = 6,
 
           checkboxInput(myIDs$idEquitiesInTicks, "In Ticks", value = FALSE),
-          numericInput(myIDs$idEquitiesStopLoss, label = "Stop Loss", value = 25, width = "50%"),
-          numericInput(myIDs$idEquitiesProfitTarget, label = "Profit Target", value = 75, width = "50%")
+          numericInput(myIDs$idEquitiesStopLoss, label = "Stop Loss", value = 49, width = "50%"),
+          numericInput(myIDs$idEquitiesProfitTarget, label = "Profit Target", value = 55, width = "50%")
 
         )
 
@@ -239,6 +239,12 @@
         if (abs(1 - (abs(DefaultValue - Entry) / Entry)) > 0.25){
           Entry <- DefaultValue;
           updateNumericInput(session, myIDs$idEquitiesEntry, value = DefaultValue);
+
+          UseTicks <- isolate(reUseTicks());
+          if (!UseTicks){
+            updateNumericInput(session, myIDs$idEquitiesStopLoss, value = DefaultValue - 0.25);
+            updateNumericInput(session, myIDs$idEquitiesProfitTarget, value = DefaultValue + 0.75);
+          }
         }
 
         updateNumericInput(session, myIDs$idEquitiesTicksPerPoint, value = TicksPerPoint);
