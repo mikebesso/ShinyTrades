@@ -72,7 +72,6 @@
     scraped <- str_replace_all(scraped, "\n\n", "\n");
     lines <- unlist(strsplit(scraped, "\n"))
 
-
     lines <- str_trim(lines, side = 'both');
 
 
@@ -88,27 +87,25 @@
     .product_count <- length(products);
     .value_count <- .product_count * 12;
 
+
     lines <- lines[-(1:symbol_line_number)];
-    lines <- lines[1:.value_count];
 
-    cleanup <- function(x){
+    lines <- lines[nchar(lines) != 0]
+    lines[lines %in% c("*", "<", ">")] <- NA;
 
-      #cat(length(x), ":  ", x, "\n")
 
-      x <- str_replace_all(str_trim(x), fixed("*"), "");
+    lines <- str_replace(lines, "[*]", "");
+    lines <- str_trim(lines[1:.value_count], "both");
 
-      bad_comma <- str_detect(x, "[,][0-9][0-9]{1,2}$");
-      if (any(bad_comma)) {
-        x[bad_comma] <- str_replace_all(x[bad_comma], fixed(","), ".");
-      }
 
-      x <- str_replace_all(x, fixed(","), "");
-
-      x <- suppressWarnings(as.double(x));
-
-      x
-
+    # deal with any bad commas that are most likely decimal points
+    bad_comma <- str_detect(lines, "[,][0-9]{1,2}$");
+    bad_comma[is.na(bad_comma)] <- FALSE;
+    if (any(bad_comma, na.rm = TRUE)) {
+      lines[bad_comma] <- str_replace_all(lines[bad_comma], fixed(","), ".");
     }
+
+    lines <- suppressWarnings(as.double(lines));
 
 
     df <- ldply(
@@ -121,10 +118,9 @@
           )
         );
 
+        levels <- lines[indices];
 
         #cat(x, "\n", symbols[x+1], "\n")
-
-        levels <- cleanup(lines[indices]);
 
         levels[is.na(levels) & append(rep(TRUE, 6), rep(FALSE, 6))] <- 99999;
         levels[is.na(levels) & append(rep(FALSE, 6), rep(TRUE, 6))] <- 0;
@@ -173,7 +169,7 @@
     cat("processing: ", file, "\n");
     lines <- DropBox$ReadLines(file);
     asofdate = String$ExtractDate(file);
-    Process(lines, asofdate);
+    Transform(lines, asofdate);
   }
 
 
@@ -189,8 +185,10 @@
   ProcessClipboardFile <- function(file){
     cat("processing: ", file, "\n");
     lines <- FileSystem$ReadLines(file);
-    asofdate = String$ExtractDate(file);
-    Process(lines, asofdate);
+    if(!is.null(lines)){
+      asofdate = String$ExtractDate(file);
+      Transform(lines, asofdate);
+    }
   }
 
 
@@ -346,6 +344,7 @@
       InitializeFromClipboard = InitializeFromClipboard,
       InitializeAllSymbols = InitializeAllSymbols,
       InitializeAll = InitializeAll,
+      ProcessClipboardFile = ProcessClipboardFile,
       ProcessClipboardFromDropBox = ProcessClipboardFromDropBox,
       ProcessClipboardFileFromDropBox = ProcessClipboardFileFromDropBox,
       Data = Data
@@ -362,4 +361,12 @@ Scraper <- .Scraper();
 
 
 #Scraper$ProcessClipboard();
-#Scraper$ProcessClipboardFile("/Apps/ShinyTrades/scrapes/clipboard/scrape-clip-2016-03-01.txt");
+#
+if(FALSE){
+
+
+  source("bootstrap.R");
+
+
+Scraper$ProcessClipboardFile("/Volumes/Pegasus/Users/Mike/Dropbox/Apps/ShinyTrades/scrapes/clipboard/scrape-clip-2016-08-02.txt");
+}
